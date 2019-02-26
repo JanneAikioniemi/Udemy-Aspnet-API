@@ -17,10 +17,17 @@ namespace DatingApp.API.Controllers
             m_authRepository = authRepository;
         }
 
+        // public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto) // if not using [ApiController]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto) // if using [ApiController]
         {
-            // TODO: validate request
+            // validate request if not using [ApiController]
+            // if (!ModelState.IsValid)
+            // {
+            //     return BadRequest(ModelState);
+            // }
+
+
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
             if (await m_authRepository.UserExists(userForRegisterDto.Username))
             {
