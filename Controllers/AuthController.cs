@@ -45,15 +45,12 @@ namespace DatingApp.API.Controllers
                 return BadRequest("Username already taken");
             }
 
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.Username
-            };
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
             var createdUser = await _authRepository.Register(userToCreate, userForRegisterDto.Password);
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
 
-            // TODO: use CreatedAtRoute
-            return StatusCode(201);
+            return CreatedAtRoute("GetUser", new User { controller = "Users", Id = createdUser.Id }, userToReturn);
         }
 
         [HttpPost("login")]
